@@ -1,0 +1,14 @@
+[project]
+name = "apply-log"
+version = "0.1.0"
+description = "A private, local job-hunt tracker: applications, resume variants, follow-ups and Todoist-ready reminders."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+apply-log = "apply_log:main"
+
+[tool.setuptools]
+py-modules = ["apply_log"]

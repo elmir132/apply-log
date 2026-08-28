@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+build/
+*.egg-info/
+# your own data never belongs in the repository (the default file is in ~/.apply-log/)
+applications.json
+.apply-log/
