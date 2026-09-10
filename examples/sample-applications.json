@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "next_id": 7,
+  "applications": [
+    {
+      "id": 1,
+      "company": "Example Robotics",
+      "role": "ML Engineer",
+      "url": "https://example.com/jobs/1",
+      "resume": "ai-engineer",
+      "source": "referral",
+      "contact": null,
+      "status": "interview",
+      "applied_on": "2026-09-14",
+      "follow_up": "2026-09-21",
+      "notes": null,
+      "created": "2026-09-14",
+      "updated": "2026-10-06",
+      "history": [
+        {
+          "on": "2026-09-14",
+          "event": "created",
+          "to": "applied"
+        },
+        {
+          "on": "2026-09-28",
+          "event": "status",
+          "from": "applied",
+          "to": "screening",
+          "note": "recruiter call booked"
+        },
+        {
+          "on": "2026-10-06",
+          "event": "status",
+          "from": "screening",
+          "to": "interview"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "company": "Sample Analytics",
+      "role": "Data Scientist",
+      "url": null,
+      "resume": "general",
+      "source": "LinkedIn",
+      "contact": null,
+      "status": "applied",
+      "applied_on": "2026-09-15",
+      "follow_up": "2026-10-12",
+      "notes": null,
+      "created": "2026-09-15",
+      "updated": "2026-10-05",
+      "history": [
+        {
+          "on": "2026-09-15",
+          "event": "created",
+          "to": "applied"
+        },
+        {
+          "on": "2026-10-05",
+          "event": "followed up",
+          "note": "emailed the recruiter"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "company": "Demo Security",
+      "role": "Security Engineer",
+      "url": null,
+      "resume": "trust-safety",
+      "source": "LinkedIn",
+      "contact": null,
+      "status": "rejected",
+      "applied_on": "2026-09-16",
+      "follow_up": null,
+      "notes": null,
+      "created": "2026-09-16",
+      "updated": "2026-10-01",
+      "history": [
+        {
+          "on": "2026-09-16",
+          "event": "created",
+          "to": "applied"
+        },
+        {
+          "on": "2026-10-01",
+          "event": "status",
+          "from": "applied",
+          "to": "rejected",
+          "note": "automated email"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "company": "Placeholder Labs",
+      "role": "Applied Scientist",
+      "url": null,
+      "resume": "ai-engineer",
+      "source": "career fair",
+      "contact": null,
+      "status": "rejected",
+      "applied_on": "2026-09-21",
+      "follow_up": null,
+      "notes": null,
+      "created": "2026-09-21",
+      "updated": "2026-10-09",
+      "history": [
+        {
+          "on": "2026-09-21",
+          "event": "created",
+          "to": "applied"
+        },
+        {
+          "on": "2026-10-09",
+          "event": "status",
+          "from": "applied",
+          "to": "rejected"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "company": "Fictional Health",
+      "role": "Backend Engineer",
+      "url": null,
+      "resume": "general",
+      "source": "LinkedIn",
+      "contact": null,
+      "status": "applied",
+      "applied_on": "2026-09-22",
+      "follow_up": "2026-09-29",
+      "notes": null,
+      "created": "2026-09-22",
+      "updated": "2026-09-22",
+      "history": [
+        {
+          "on": "2026-09-22",
+          "event": "created",
+          "to": "applied"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "company": "Acme Example",
+      "role": "AI Engineer",
+      "url": "https://example.com/jobs/6",
+      "resume": null,
+      "source": null,
+      "contact": null,
+      "status": "wishlist",
+      "applied_on": null,
+      "follow_up": null,
+      "notes": null,
+      "created": "2026-09-24",
+      "updated": "2026-09-24",
+      "history": [
+        {
+          "on": "2026-09-24",
+          "event": "created",
+          "to": "wishlist"
+        }
+      ]
+    }
+  ]
+}
