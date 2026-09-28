@@ -381,6 +381,7 @@ def build_parser():
     lst.add_argument("--status", choices=STATUSES)
     lst.add_argument("--company", help="only companies containing this text")
     lst.add_argument("--resume")
+    lst.add_argument("--source", help="only applications from this source")
     lst.add_argument("--all", action="store_true", help="include closed applications")
     lst.add_argument("--json", action="store_true")
 
@@ -403,6 +404,7 @@ def build_parser():
 
     remind = sub.add_parser("remind", help="list follow-ups that are due")
     remind.add_argument("--within", type=int, default=0, help="also include follow-ups due in the next N days")
+    remind.add_argument("--json", action="store_true", help="output reminders as JSON")
 
     stat = sub.add_parser("stats", help="replies by resume variant and source")
     stat.add_argument("--json", action="store_true")
@@ -413,6 +415,7 @@ def build_parser():
 
     export = sub.add_parser("export", help="write every application as CSV or JSON")
     export.add_argument("--format", choices=["csv", "json"], default="csv")
+    export.add_argument("--open-only", action="store_true", help="only include open applications")
     export.add_argument("--out")
 
     rm = sub.add_parser("remove", help="delete an application")
@@ -449,6 +452,8 @@ def run(args, data, today):
             apps = [a for a in apps if args.company.lower() in a["company"].lower()]
         if args.resume:
             apps = [a for a in apps if (a.get("resume") or "").lower() == args.resume.lower()]
+        if args.source:
+            apps = [a for a in apps if args.source.lower() in (a.get("source") or "").lower()]
         apps.sort(key=lambda a: a["id"])
         if args.json:
             return False, json.dumps(apps, indent=2, ensure_ascii=False)
@@ -471,6 +476,14 @@ def run(args, data, today):
         return True, text
     if cmd == "remind":
         items = due(data, today, args.within)
+        if args.json:
+            out_items = []
+            for a in items:
+                days = (from_iso(a["follow_up"]) - today).days
+                out_items.append({"id": a["id"], "company": a["company"], "role": a["role"],
+                                  "follow_up": a["follow_up"], "days_overdue": -days if days < 0 else 0,
+                                  "days_until": days if days >= 0 else 0})
+            return False, json.dumps(out_items, indent=2, ensure_ascii=False)
         if not items:
             return False, "no follow-ups due" + (f" in the next {args.within} day(s)" if args.within else "")
         rows = []
@@ -485,7 +498,9 @@ def run(args, data, today):
     if cmd == "export-todoist":
         return False, ("__file__", todoist_csv(data, today, args.within), args.out)
     if cmd == "export":
-        text = export_csv(data) if args.format == "csv" else json.dumps(data["applications"], indent=2, ensure_ascii=False) + "\n"
+        apps = [a for a in data["applications"] if a["status"] in OPEN] if args.open_only else data["applications"]
+        export_data = {"version": data.get("version", 1), "applications": apps}
+        text = export_csv(export_data) if args.format == "csv" else json.dumps(apps, indent=2, ensure_ascii=False) + "\n"
         return False, ("__file__", text, args.out)
     if cmd == "remove":
         app = find(data, args.id)
