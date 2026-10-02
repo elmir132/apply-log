@@ -159,7 +159,7 @@ class StorageTests(Case):
 class ListShowTests(Case):
     def setUp(self):
         super().setUp()
-        self.add("Acme", "ML Engineer", "--resume", "ai")
+        self.add("Acme", "ML Engineer", "--resume", "ai", "--source", "LinkedIn")
         self.add("Globex", "Backend", "--resume", "general")
         self.add("Initech", "Data", "--status", "wishlist")
         self.run_cli("update", "2", "--status", "rejected")
@@ -176,6 +176,8 @@ class ListShowTests(Case):
         self.assertIn("Acme", self.run_cli("list", "--company", "ACM")[1])
         self.assertNotIn("Initech", self.run_cli("list", "--company", "acm")[1])
         self.assertIn("Acme", self.run_cli("list", "--resume", "AI")[1])
+        self.assertIn("Acme", self.run_cli("list", "--source", "LinkedIn")[1])
+        self.assertNotIn("Initech", self.run_cli("list", "--source", "LinkedIn")[1])
         self.assertEqual(self.run_cli("list", "--company", "nobody")[1].strip(), "nothing to show")
 
     def test_json_listing_is_valid(self):
@@ -281,6 +283,15 @@ class RemindTests(Case):
         self.assertNotIn("Far", out)
         self.assertNotIn("Wish", out)
 
+    def test_remind_json_output(self):
+        self.add("Late", "r", "--follow-up", "2026-10-10")
+        code, out, _ = self.run_cli("remind", "--json")
+        self.assertEqual(code, 0)
+        items = json.loads(out)
+        self.assertEqual(len(items), 1)
+        self.assertEqual(items[0]["company"], "Late")
+        self.assertEqual(items[0]["days_overdue"], 3)
+
     def test_nothing_due_says_so(self):
         self.assertEqual(self.run_cli("remind")[1].strip(), "no follow-ups due")
 
@@ -368,8 +379,14 @@ class ExportTests(Case):
 
     def test_full_exports(self):
         self.add("Acme", "ML", "--note", "a, \"quoted\" note")
+        self.add("Closed", "Dev")
+        self.run_cli("update", "2", "--status", "rejected")
         rows = list(csv.DictReader(io.StringIO(self.run_cli("export")[1])))
         self.assertEqual((rows[0]["company"], rows[0]["notes"]), ("Acme", 'a, "quoted" note'))
+        self.assertEqual(len(rows), 2)
+        open_rows = list(csv.DictReader(io.StringIO(self.run_cli("export", "--open-only")[1])))
+        self.assertEqual(len(open_rows), 1)
+        self.assertEqual(open_rows[0]["company"], "Acme")
         self.assertEqual(json.loads(self.run_cli("export", "--format", "json")[1])[0]["company"], "Acme")
 
 
