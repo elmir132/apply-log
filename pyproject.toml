@@ -1,6 +1,6 @@
 [project]
 name = "apply-log"
-version = "0.1.0"
+version = "0.2.0"
 description = "A private, local job-hunt tracker: applications, resume variants, follow-ups and Todoist-ready reminders."
 readme = "README.md"
 license = { text = "MIT" }

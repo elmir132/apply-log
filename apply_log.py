@@ -16,7 +16,7 @@ import sys
 import tempfile
 from datetime import date, datetime, timedelta
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 STATUSES = ["wishlist", "applied", "screening", "interview", "offer", "accepted", "rejected", "withdrawn", "ghosted"]
 OPEN = ("wishlist", "applied", "screening", "interview", "offer")

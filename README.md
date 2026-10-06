@@ -43,10 +43,10 @@ After `pip install .` the command is called `apply-log`. Try it on the sample da
 Every application has a **status** (`wishlist`, `applied`, `screening`, `interview`, `offer`, `accepted`, `rejected`, `withdrawn`, `ghosted`), the date you applied, a follow-up date, and a **history** of everything that happened to it, so the numbers below can be worked out later.
 
 - **Follow-ups:** a new application gets a follow-up date a week after you applied (change it with `--follow-up`). `follow` logs that you followed up and schedules the next one; after the third follow-up with no change it suggests marking the application `ghosted`. Closing an application (`accepted`, `rejected`, `withdrawn`, `ghosted`) clears its follow-up date.
-- **`remind [--within N]`:** open applications whose follow-up is due, overdue (with how many days) or coming up in the next N days.
+- **`remind [--within N] [--json]`:** open applications whose follow-up is due, overdue (with how many days) or coming up in the next N days.
 - **`stats`:** how many you sent, how many **replied** (including rejections, because a no is still an answer), how many **moved you forward** (screen or beyond), the median days to a first reply, and the same split by resume variant and by source. Groups under 5 applications are labelled "too few to compare", because with so few the differences are noise.
 - **`check`:** validates the file and points out applications that have no follow-up date or have not changed for 30 days.
-- **`list`** (open applications by default; `--all`, `--status`, `--company`, `--resume`, `--json`), **`show`** (one application with its history), **`update`**, **`remove --yes`**, **`export`** (CSV or JSON).
+- **`list`** (open applications by default; `--all`, `--status`, `--company`, `--resume`, `--source`, `--json`), **`show`** (one application with its history), **`update`**, **`remove --yes`**, **`export`** (CSV or JSON; optionally `--open-only`).
 - Dates can be written `2026-11-03`, `today`, `tomorrow`, `+3d` or `+2w`.
 
 ### Todoist
@@ -72,7 +72,7 @@ By default everything is stored in `~/.apply-log/applications.json` (set another
 python -m unittest discover -s tests
 ```
 
-46 tests, offline, using temporary files: date parsing, validation, every command and its error cases, history and status rules, the reply statistics, the Todoist and CSV export (including formula safety), file privacy, atomic writes and damaged files. CI runs them on Python 3.9 and 3.12 with a lint step.
+47 tests, offline, using temporary files: date parsing, validation, every command and its error cases, history and status rules, the reply statistics, the Todoist and CSV export (including formula safety), file privacy, atomic writes and damaged files. CI runs them on Python 3.9 and 3.12 with a lint step.
 
 ## Limits you should know about
 
