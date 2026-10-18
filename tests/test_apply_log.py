@@ -437,3 +437,17 @@ class ProcessTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ClosedFollowUpTests(unittest.TestCase):
+    def test_a_closed_application_cannot_be_given_a_follow_up_date_and_is_left_untouched(self):
+        import datetime as dt
+
+        today = dt.date(2026, 10, 18)
+        data = {"next_id": 1, "applications": []}
+        al.add_application(data, today, "Acme", "SWE")
+        with self.assertRaises(al.ApplyLogError):
+            al.update_application(data, today, 1, status="rejected", follow_up=dt.date(2026, 11, 1))
+        self.assertEqual(data["applications"][0]["status"], "applied")
+        al.update_application(data, today, 1, status="rejected")
+        self.assertIsNone(data["applications"][0]["follow_up"])

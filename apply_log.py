@@ -173,6 +173,9 @@ def add_application(data, today, company, role, status="applied", url=None, resu
 def update_application(data, today, app_id, status=None, note=None, follow_up=..., **fields):
     """Change fields. `follow_up` may be a date, None (clear it) or left out (unchanged)."""
     app = find(data, app_id)
+    final_status = status if status is not None else app["status"]
+    if follow_up is not ... and follow_up is not None and final_status in CLOSED:
+        raise ApplyLogError(f"a {final_status} application has no follow-up date")      # checked first so nothing is half-updated
     for field in ("company", "role", "url", "resume", "source", "contact"):
         if field in fields and fields[field] is not None:
             value = clean(fields[field], field, required=field in ("company", "role"))
