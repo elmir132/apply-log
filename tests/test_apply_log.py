@@ -166,7 +166,8 @@ class ListShowTests(Case):
 
     def test_closed_applications_are_hidden_unless_asked_for(self):
         _, out, _ = self.run_cli("list")
-        self.assertIn("Acme", out) and self.assertIn("Initech", out)
+        self.assertIn("Acme", out)
+        self.assertIn("Initech", out)
         self.assertNotIn("Globex", out)
         self.assertIn("Globex", self.run_cli("list", "--all")[1])
 
