@@ -452,3 +452,35 @@ class ClosedFollowUpTests(unittest.TestCase):
         self.assertEqual(data["applications"][0]["status"], "applied")
         al.update_application(data, today, 1, status="rejected")
         self.assertIsNone(data["applications"][0]["follow_up"])
+
+
+class AppliedOnHistoryTests(unittest.TestCase):
+    def test_changing_applied_on_is_recorded_in_history(self):
+        data = al.empty_data()
+        app = al.add_application(data, TODAY, "Acme", "ML Engineer", applied_on=date(2026, 10, 1))
+        before = len(app["history"])
+        al.update_application(data, TODAY, app["id"], applied_on=date(2026, 10, 5))
+        self.assertEqual(app["applied_on"], "2026-10-05")
+        self.assertEqual(len(app["history"]), before + 1)
+        event = app["history"][-1]
+        self.assertEqual(event["event"], "edited")
+        self.assertEqual(event["field"], "applied_on")
+        self.assertEqual(event["to"], "2026-10-05")
+        self.assertEqual(event["on"], TODAY.isoformat())
+
+    def test_unchanged_applied_on_adds_no_history(self):
+        data = al.empty_data()
+        app = al.add_application(data, TODAY, "Acme", "ML Engineer", applied_on=date(2026, 10, 1))
+        before = list(app["history"])
+        al.update_application(data, TODAY, app["id"], applied_on=date(2026, 10, 1))
+        self.assertEqual(app["applied_on"], "2026-10-01")
+        self.assertEqual(app["history"], before)
+
+    def test_applied_on_edit_via_cli_shows_in_history(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "applications.json")
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(al.main(["--file", path, "add", "Acme", "ML Engineer", "--date", "2026-10-01"], today=TODAY), 0)
+                self.assertEqual(al.main(["--file", path, "update", "1", "--applied-on", "2026-10-03"], today=TODAY), 0)
+            app = al.load(path)["applications"][0]
+            self.assertIn({"on": TODAY.isoformat(), "event": "edited", "field": "applied_on", "to": "2026-10-03"}, app["history"])

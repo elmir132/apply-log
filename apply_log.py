@@ -183,7 +183,10 @@ def update_application(data, today, app_id, status=None, note=None, follow_up=..
                 log(app, today, "edited", field=field, to=value)
             app[field] = value
     if fields.get("applied_on") is not None:
-        app["applied_on"] = iso(fields["applied_on"])
+        value = iso(fields["applied_on"])
+        if value != app.get("applied_on"):
+            log(app, today, "edited", field="applied_on", to=value)
+        app["applied_on"] = value
     if status is not None and status != app["status"]:
         if status not in STATUSES:
             raise ApplyLogError(f"status must be one of: {', '.join(STATUSES)}")
