@@ -4,6 +4,10 @@ A private job-hunt tracker for the command line. It keeps every application in o
 
 It is one Python file with no dependencies, it never sends anything anywhere, and it keeps your data out of the repository.
 
+![Terminal output of apply-log list and remind on the fictional sample file](docs/demo.png)
+
+*A real run on the fictional sample file in `examples/`. The text output below is from an earlier day, so the overdue counts differ.*
+
 ```text
 $ apply-log list
 ID  STATUS     COMPANY           ROLE              RESUME       APPLIED     FOLLOW-UP
